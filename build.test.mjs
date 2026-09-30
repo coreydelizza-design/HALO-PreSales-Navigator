@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
-const root = fileURLToPath(new URL('../', import.meta.url));
+const root = fileURLToPath(new URL('./', import.meta.url));
 const read = file => readFileSync(path.join(root, file), 'utf8');
 const html = read('dist/index.html');
 const config = JSON.parse(read('vercel.json'));
@@ -16,7 +16,7 @@ test('standalone and production entry points are identical', () => {
   assert.equal(read('index.html'), html);
 });
 test('generated HTML contains current readable sources exactly', () => {
-  for (const file of ['src/style.css', 'src/data.js', 'src/app.js']) assert(html.includes(read(file)), file);
+  for (const file of ['style.css', 'data.js', 'app.js']) assert(html.includes(read(file)), file);
   assert(!html.includes('{{HALO_'));
 });
 test('runtime has no remote script, stylesheet, frame, or image dependency', () => {
@@ -31,7 +31,7 @@ test('Vercel configuration points to a dependency-free production build', () => 
   assert.equal(config.installCommand, '');
   assert.equal(config.buildCommand, 'npm run build');
   assert.equal(config.outputDirectory, 'dist');
-  assert.equal(pkg.scripts.build, 'node scripts/build.mjs');
+  assert.equal(pkg.scripts.build, 'node build.mjs');
   assert.equal(Object.keys(pkg.dependencies || {}).length, 0);
   assert.equal(Object.keys(pkg.devDependencies || {}).length, 0);
 });
@@ -45,7 +45,7 @@ test('response protection and indexing headers are included', () => {
 });
 test('discovery and validation questions have unique identifiers and valid module links', () => {
   const c = vm.createContext({});
-  vm.runInContext(read('src/data.js') + '\nthis.fixture={CUSTOMER,GTT,MODULES};', c);
+  vm.runInContext(read('data.js') + '\nthis.fixture={CUSTOMER,GTT,MODULES};', c);
   const {CUSTOMER, GTT, MODULES} = c.fixture;
   assert.equal(CUSTOMER.length, 16);
   assert.equal(GTT.length, 14);

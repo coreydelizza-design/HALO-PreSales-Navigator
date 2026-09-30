@@ -1,17 +1,20 @@
-/** Dependency-free production build. Publishes only the allowlisted web files. */
+/** Dependency-free production build for the flat GitHub upload layout.
+ * Keep build.mjs, template.html, style.css, data.js, app.js, robots.txt,
+ * and 404.html at the repository root. Only three web files are published.
+ */
 import { readFile, writeFile, mkdir, rm, copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-const root = fileURLToPath(new URL('../', import.meta.url));
+const root = fileURLToPath(new URL('./', import.meta.url));
 const out = path.join(root, 'dist');
 try {
-  for (const file of ['src/data.js', 'src/app.js']) {
+  for (const file of ['data.js', 'app.js']) {
     execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'inherit' });
   }
   const [template, css, data, app] = await Promise.all(
-    ['src/template.html', 'src/style.css', 'src/data.js', 'src/app.js']
+    ['template.html', 'style.css', 'data.js', 'app.js']
       .map(file => readFile(path.join(root, file), 'utf8'))
   );
   const script = data + '\n' + app;
@@ -29,7 +32,7 @@ try {
   await writeFile(path.join(out, 'index.html'), html, 'utf8');
   await writeFile(path.join(root, 'index.html'), html, 'utf8');
   for (const name of ['robots.txt', '404.html']) {
-    await copyFile(path.join(root, 'public', name), path.join(out, name));
+    await copyFile(path.join(root, name), path.join(out, name));
   }
   console.log(`HALO production build complete: dist/index.html (${Buffer.byteLength(html).toLocaleString()} bytes).`);
   console.log('Published files: index.html, robots.txt, 404.html. No credentials or environment variables required.');

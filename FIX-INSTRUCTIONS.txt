@@ -1,0 +1,70 @@
+HALO GITHUB BUILD REPAIR — FLAT REPOSITORY LAYOUT
+Prepared 2026-09-30
+
+Target: coreydelizza-design/HALO-PreSales-Navigator
+Diagnosed commit: 31c17ca51a6bfd1e385cf1c745967cd99d72edcf
+
+WHAT FAILED
+package.json called node scripts/build.mjs, but your repository contains
+build.mjs at its root. The original script also expected src/ and public/
+folders, but their files are at the root too. This repair matches that layout.
+
+APPLY THE REPAIR (NO NEW REPOSITORY NEEDED)
+1. Download this ZIP and choose Extract All in Windows.
+2. Open the extracted folder. There are seven replacement code/config files
+   and this instruction file, with no nested folders.
+3. Open your existing GitHub repository. Select main and the Code tab.
+4. At the repository root, click Add file > Upload files.
+5. Select all seven replacement files from the extracted folder:
+   package.json, package-lock.json, build.mjs, serve.mjs,
+   build.test.mjs, http.test.mjs, acceptance.py.
+   Do not upload the ZIP. Do not create a scripts/ or src/ folder.
+6. Review the changes. These replace existing files with the same names.
+   Keep index.html, app.js, data.js, style.css, template.html, 404.html,
+   robots.txt, vercel.json, and every other existing repository file.
+7. Use commit message: Fix HALO build paths for flat repository layout.
+   Commit to main, or use your normal pull-request workflow and merge to main.
+8. Open the existing Vercel project > Deployments. Its Git integration normally
+   creates a deployment for the new commit. Open that NEW deployment, not a
+   rerun of the failed 31c17ca commit.
+
+BUILD SETTINGS
+Keep the existing root vercel.json unchanged:
+  Framework: Other (framework: null)
+  Build command: npm run build
+  Output directory: dist
+  Install command: skipped (empty string)
+  Root directory: repository root (not scripts, src, or dist)
+  Node.js: 22.x
+  Environment variables: none required by this application
+
+The repaired package.json runs node build.mjs. The repaired build script
+reads the source and static files from the repository root, validates the
+JavaScript, and creates dist/index.html, dist/404.html and dist/robots.txt.
+Only those three files are published, not the source or test files.
+
+EXPECTED BUILD OUTPUT
+  > gtt-halo-presales-navigator@2.1.1 build
+  > node build.mjs
+  HALO production build complete: dist/index.html (152,732 bytes).
+
+The UI and all application source are unchanged. This patch also corrects
+root paths in the optional local preview and test commands. npm test has no
+external dependencies. Optional npm run test:browser requires Python,
+Playwright and Chromium as before; it was not rerun for this path repair.
+
+VERIFICATION
+The unpatched flattened repository reproduced MODULE_NOT_FOUND.
+The repaired build and 13 Node build/server checks passed locally on
+Node.js v22.16.0. The generated index.html is byte-for-byte identical to
+the previously supplied application. A fresh extraction/overlay of the
+finished repair ZIP was tested too.
+
+This is a repair patch, not a full application ZIP. It depends on your
+existing root-level application files. No GitHub files were remotely
+changed and no Vercel deployment was triggered by preparing this ZIP.
+
+Primary documentation reviewed:
+https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository
+https://vercel.com/docs/project-configuration/vercel-json
+https://vercel.com/docs/git/vercel-for-github

@@ -3,7 +3,7 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-const root = fileURLToPath(new URL('../', import.meta.url));
+const root = fileURLToPath(new URL('./', import.meta.url));
 const dist = path.join(root, 'dist');
 const port = Number(process.env.PORT || 4173);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) {

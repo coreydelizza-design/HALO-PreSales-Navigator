@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import net from 'node:net';
-const root = fileURLToPath(new URL('../', import.meta.url));
+const root = fileURLToPath(new URL('./', import.meta.url));
 async function freePort() {
   const s = net.createServer();
   await new Promise((resolve, reject) => { s.once('error', reject); s.listen(0, '127.0.0.1', resolve); });
@@ -15,7 +15,7 @@ async function freePort() {
 }
 test('HTTP preview serves only production assets with safe method and path handling', async t => {
   const port = await freePort();
-  const child = spawn(process.execPath, ['scripts/serve.mjs'], {cwd:root, env:{...process.env,PORT:String(port)}});
+  const child = spawn(process.execPath, ['serve.mjs'], {cwd:root, env:{...process.env,PORT:String(port)}});
   t.after(() => child.kill('SIGTERM'));
   await new Promise((resolve, reject) => {
     const timeout = setTimeout(() => reject(new Error('Preview failed to start in 10 seconds')), 10000);
@@ -40,7 +40,7 @@ test('HTTP preview serves only production assets with safe method and path handl
     assert.equal(await head.text(), '');
   });
   await t.test('source, configuration, tests, credentials and unknown paths are not served', async () => {
-    for (const route of ['/src/app.js','/package.json','/vercel.json','/tests/acceptance.py','/.env','/not-a-page']) {
+    for (const route of ['/app.js','/package.json','/vercel.json','/acceptance.py','/.env','/not-a-page']) {
       assert.equal((await fetch(base+route)).status, 404, route);
     }
   });
