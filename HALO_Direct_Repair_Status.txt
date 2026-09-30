@@ -1,0 +1,150 @@
+HALO repository repair status — 2026-09-30
+
+Repository: coreydelizza-design/HALO-PreSales-Navigator
+Last verified main: 31c17ca51a6bfd1e385cf1c745967cd99d72edcf
+
+REMOTE STATUS
+Read access succeeded. GitHub rejected both create_tree and update_file with HTTP 403: Resource not accessible by integration. No repository commit, pull request, deployment, or permission change was made by this repair attempt.
+
+LOCAL STATUS
+Recreated the flat repository layout. Confirmed npm run build fails with MODULE_NOT_FOUND before repair. Applied the seven-file HALO_GitHub_Build_Repair.zip patch. npm test passed with 13 test results. Browser acceptance suite passed 29 checks. Generated index.html is byte-for-byte unchanged. SHA-256 b4477bbc5f8cac02009dea479ac1a0fbcaf61f5f081094e777cc469a4eb5ea11.
+
+LIMITATIONS
+Tests ran locally on Linux with Node.js v22.16.0 and managed Chromium, not inside Vercel. Browser acceptance loads the generated HTML using set_content. Persistence round trips use a Storage-compatible test double; native browser-storage policies and hosted multiuser systems were not validated. These local results do not establish a successful hosted deployment.
+
+NODE TEST LOG
+
+> gtt-halo-presales-navigator@2.1.1 test
+> npm run check && npm run build && node --test build.test.mjs http.test.mjs
+
+
+> gtt-halo-presales-navigator@2.1.1 check
+> node --check data.js && node --check app.js && node --check build.mjs && node --check serve.mjs
+
+
+> gtt-halo-presales-navigator@2.1.1 build
+> node build.mjs
+
+HALO production build complete: dist/index.html (152,732 bytes).
+Published files: index.html, robots.txt, 404.html. No credentials or environment variables required.
+TAP version 13
+# Subtest: production output includes only the three web files
+ok 1 - production output includes only the three web files
+  ---
+  duration_ms: 3.43356
+  type: 'test'
+  ...
+# Subtest: standalone and production entry points are identical
+ok 2 - standalone and production entry points are identical
+  ---
+  duration_ms: 0.850854
+  type: 'test'
+  ...
+# Subtest: generated HTML contains current readable sources exactly
+ok 3 - generated HTML contains current readable sources exactly
+  ---
+  duration_ms: 1.071146
+  type: 'test'
+  ...
+# Subtest: runtime has no remote script, stylesheet, frame, or image dependency
+ok 4 - runtime has no remote script, stylesheet, frame, or image dependency
+  ---
+  duration_ms: 0.819406
+  type: 'test'
+  ...
+# Subtest: Vercel configuration points to a dependency-free production build
+ok 5 - Vercel configuration points to a dependency-free production build
+  ---
+  duration_ms: 0.207063
+  type: 'test'
+  ...
+# Subtest: response protection and indexing headers are included
+ok 6 - response protection and indexing headers are included
+  ---
+  duration_ms: 0.287534
+  type: 'test'
+  ...
+# Subtest: discovery and validation questions have unique identifiers and valid module links
+ok 7 - discovery and validation questions have unique identifiers and valid module links
+  ---
+  duration_ms: 2.168531
+  type: 'test'
+  ...
+# Subtest: runtime still explicitly distinguishes demo, evidence and non-connected systems
+ok 8 - runtime still explicitly distinguishes demo, evidence and non-connected systems
+  ---
+  duration_ms: 0.255415
+  type: 'test'
+  ...
+# Subtest: HTTP preview serves only production assets with safe method and path handling
+    # Subtest: home serves the exact built application
+    ok 1 - home serves the exact built application
+      ---
+      duration_ms: 43.201264
+      type: 'test'
+      ...
+    # Subtest: robots file and HEAD work
+    ok 2 - robots file and HEAD work
+      ---
+      duration_ms: 10.436397
+      type: 'test'
+      ...
+    # Subtest: source, configuration, tests, credentials and unknown paths are not served
+    ok 3 - source, configuration, tests, credentials and unknown paths are not served
+      ---
+      duration_ms: 14.21112
+      type: 'test'
+      ...
+    # Subtest: write methods are rejected
+    ok 4 - write methods are rejected
+      ---
+      duration_ms: 10.122131
+      type: 'test'
+      ...
+    1..4
+ok 9 - HTTP preview serves only production assets with safe method and path handling
+  ---
+  duration_ms: 168.978501
+  type: 'test'
+  ...
+1..9
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 266.408962
+
+BROWSER TEST LOG
+PASS Renders an explicitly fictional demo with no confirmed GTT evidence
+PASS Eight separate navigation routes render without desktop overflow
+PASS Tutorial hover explains the metric and dismisses on pointer exit
+PASS New engagement begins blank without inherited demo answers or scores
+PASS Discovery requires a written answer and saves status, owner, source and date
+PASS Discovery keyword and answer-state filters work together
+PASS Guided interview advances while skipped questions remain unknown
+PASS GTT evidence cannot be marked recorded without answer, source, owner and date
+PASS Evidence older than the navigator 90-day convention does not close the gate
+PASS Current-evidence filter excludes open and stale product questions
+PASS Current-stack vendors, coverage and comparison notes are editable and saved
+PASS Inventory add, edit and confirmed removal work
+PASS Opportunity selection and hypotheses are saved without falsely closing pilot gates
+PASS Executive audience, outcomes and transparent slider calculation update live
+PASS Pilot dates validate and planning checkboxes cannot bypass unresolved GTT proof
+PASS Customer brief omits internal notes but preserves material uncertainties
+PASS JSON backup, Markdown, HTML, GTT question brief and pilot brief download as real files
+PASS Exported customer HTML excludes internal notes; JSON contains the current engagement
+PASS Print action builds the selected brief and invokes the browser print path
+PASS Persistence round-trip reconstructs the same engagement with a Storage test double
+PASS Switching customer engagements preserves separate local datasets
+PASS Session import preserves existing data and rejects unsupported schemas
+PASS Import escapes user HTML and downgrades incomplete evidence assertions
+PASS Global search and keyboard shortcut navigate to the matching detail dialog
+PASS Talk track, sources, product tutorial and profile dialogs open and close
+PASS Confirmed local deletion removes only the selected engagement
+PASS Eight routes and discovery dialog fit a 390px viewport; mobile navigation works
+PASS Blocked browser storage produces a visible warning instead of a broken app
+PASS No JavaScript runtime errors throughout the interactive test sequence
+TOTAL 29 PASS
