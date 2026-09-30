@@ -1,0 +1,17 @@
+{
+  "name": "gtt-halo-presales-navigator",
+  "version": "2.1.0",
+  "private": true,
+  "description": "HALO-only presales discovery and evidence workspace. GitHub/Vercel static deployment.",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs",
+    "dev": "npm run build && node scripts/serve.mjs",
+    "check": "node --check src/data.js && node --check src/app.js && node --check scripts/build.mjs && node --check scripts/serve.mjs",
+    "test": "npm run check && npm run build && node --test tests/build.test.mjs tests/http.test.mjs",
+    "test:browser": "python tests/acceptance.py"
+  }
+}

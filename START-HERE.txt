@@ -1,0 +1,20 @@
+GTT DEFENSE HALO — GITHUB PACKAGE 2.1.0
+
+USE THIS PACKAGE FOR A NEW GITHUB REPOSITORY.
+
+1. Extract this ZIP.
+2. Upload ALL EXTRACTED CONTENTS into your GitHub repository root.
+   Do not upload the ZIP itself. Do not add an extra wrapper folder.
+3. Import the repository into Vercel in your browser.
+4. Framework: Other. Build: npm run build. Output: dist.
+5. No environment variables or API keys are needed.
+
+Read GITHUB-VERCEL-SETUP.md for every click.
+Read README.md for what the application does and its limits.
+
+Keep HALO_Static_Web.zip separate. It is a static-hosting alternative,
+not a second set of files to put in this repository.
+
+No deployment has been made by providing this package.
+Browser-local sessions only. No production login, database or live HALO API.
+Use fictional data until the environment is approved for customer information.
